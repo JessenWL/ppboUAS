@@ -14,9 +14,9 @@ public class Pembelian {
     private String kode_pb;
     private String kode_tk;
     private String ktp;
-    private Date tgl_pb;
     private String harga;
     private String des;
+    private Date tgl_pb;
     private String jenis_kendaraan;
     
     public String getKode_pb() {
@@ -83,16 +83,16 @@ public class Pembelian {
         
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         
-        String sql="INSERT INTO pembelian (kode_pb, kode_tk, ktp, tgl_pb, harga, des, jenis_kendaraan) VALUE(?, ?, ?, ?, ?, ?, ?)";
+        String sql="INSERT INTO pembelian (kode_pb, kode_tk, ktp, harga, des,tgl_pb, jenis_kendaraan) VALUE(?, ?, ?, ?, ?, ?, ?)";
         
         try{
             pstm=conn.prepareStatement(sql);
             pstm.setString(1, data.getKode_pb());
             pstm.setString(2, data.getKode_tk());
             pstm.setString(3, data.getKtp());
-            pstm.setString(4, df.format(getTgl_pb()));
-            pstm.setString(5, data.getHarga());
-            pstm.setString(6, data.getDes());
+            pstm.setString(4, data.getHarga());
+            pstm.setString(5, data.getDes());
+            pstm.setString(6, df.format(getTgl_pb()));
             pstm.setString(7, data.getJenis_kendaraan());
             pstm.execute();
             return true;
@@ -107,17 +107,17 @@ public class Pembelian {
         
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         
-        String sql="UPDATE pembelian SET kode_pb=?, kode_tk=?, ktp=?, tgl_pb=?, harga=?, des=?, jenis_kendaraan=?   WHERE kode_pb=?";
-        
+        String sql="update pembelian set kode_tk=?, ktp=?, harga=?, des=?, tgl_pb=?, jenis_kendaraan=? where kode_pb=?";
+
         try{
             pstm=conn.prepareStatement(sql);
-            pstm.setString(1, data.getKode_pb());
-            pstm.setString(2, data.getKode_tk());
-            pstm.setString(3, data.getKtp());
-            pstm.setString(4, df.format(getTgl_pb()));
-            pstm.setString(5, data.getHarga());
-            pstm.setString(6, data.getDes());
-            pstm.setString(7, data.getJenis_kendaraan());
+            pstm.setString(7, data.getKode_pb());
+            pstm.setString(1, data.getKode_tk());
+            pstm.setString(2, data.getKtp());
+            pstm.setString(3, data.getHarga());
+            pstm.setString(4, data.getDes());
+            pstm.setString(5, df.format(getTgl_pb()));
+            pstm.setString(6, data.getJenis_kendaraan());
             pstm.execute();
             return true;
         }catch(HeadlessException | SQLException e){
