@@ -236,7 +236,7 @@ public class FormLogin extends javax.swing.JFrame {
             txt_pass.requestFocus();
         }
         else if(txt_username.getText().contains("admin") && txt_pass.getText().contains("admin")){
-            new home().show();
+            new Dashboard().show();
             this.dispose();
         }
         else{
