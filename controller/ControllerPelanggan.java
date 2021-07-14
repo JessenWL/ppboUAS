@@ -42,6 +42,7 @@ public class ControllerPelanggan implements ActionListener, MouseListener{
         }
     public void TampilDataFormPelanggan(){
             DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("No");
             model.addColumn("No KTP Pelanggan");
             model.addColumn("Nama Pelanggan");
             model.addColumn("Alamat");
@@ -61,7 +62,9 @@ public class ControllerPelanggan implements ActionListener, MouseListener{
                         res.getString(1),
                         res.getString(2),
                         res.getString(3),
-                        res.getString(4),});
+                        res.getString(4),
+                        res.getString(5)
+                    });
                 }
                 form.tabelPelanggan.setModel(model);
             }catch(SQLException e){
@@ -123,18 +126,17 @@ public class ControllerPelanggan implements ActionListener, MouseListener{
     @Override
     public void mouseClicked(MouseEvent me) {
         if(me.getSource()==form.tabelPelanggan){
-            form.txtNoKtp.setEditable(false);
-            
+            form.txtNoKtp.setEditable(false); 
             int baris=form.tabelPelanggan.rowAtPoint(me.getPoint());
             String no_ktp=form.tabelPelanggan.getValueAt(baris, 1).toString();
             form.txtNoKtp.setText(no_ktp);
-            String nama=form.tabelPelanggan.getValueAt(baris, 3).toString();
+            String nama=form.tabelPelanggan.getValueAt(baris, 2).toString();
             form.txtNamaPelanggan.setText(nama);
-            String alamat=form.tabelPelanggan.getValueAt(baris, 4).toString();
+            String alamat=form.tabelPelanggan.getValueAt(baris, 3).toString();
             form.txtAlamat.setText(alamat);
-            String umur=form.tabelPelanggan.getValueAt(baris, 5).toString();
+            String umur=form.tabelPelanggan.getValueAt(baris, 4).toString();
             form.txtUmur.setText(umur);
-            String Jenis_kelamin=form.tabelPelanggan.getValueAt(baris, 6).toString();
+            String Jenis_kelamin=form.tabelPelanggan.getValueAt(baris, 5).toString();
             form.cmbJk.setSelectedItem(Jenis_kelamin);
         }
     }
