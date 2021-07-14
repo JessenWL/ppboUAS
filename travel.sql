@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 14, 2021 at 02:12 PM
--- Server version: 10.4.18-MariaDB
--- PHP Version: 7.3.27
+-- Generation Time: Jul 14, 2021 at 03:52 PM
+-- Server version: 10.4.19-MariaDB
+-- PHP Version: 8.0.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -54,9 +54,9 @@ CREATE TABLE `pembelian` (
   `kode_pb` varchar(25) NOT NULL,
   `kode_tk` varchar(25) NOT NULL,
   `ktp` varchar(25) NOT NULL,
-  `tgl_pb` date NOT NULL,
   `harga` int(100) NOT NULL,
   `des` varchar(50) NOT NULL,
+  `tgl_pb` date NOT NULL,
   `jenis_kendaraan` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -64,10 +64,8 @@ CREATE TABLE `pembelian` (
 -- Dumping data for table `pembelian`
 --
 
-INSERT INTO `pembelian` (`kode_pb`, `kode_tk`, `ktp`, `tgl_pb`, `harga`, `des`, `jenis_kendaraan`) VALUES
-('100', '1000020', '14002000830081', '2021-07-02', 400000, 'Pekanbaru', 'Bus'),
-('102', '1000022', '140020008409', '2021-07-08', 400000, 'Pekanbaru', 'Pesawat'),
-('103', '12222', '1400067895', '2021-07-29', 200000, 'Jakarta', 'Bus');
+INSERT INTO `pembelian` (`kode_pb`, `kode_tk`, `ktp`, `harga`, `des`, `tgl_pb`, `jenis_kendaraan`) VALUES
+('100', '0001', '1000990', 50000, 'FKS', '2021-07-19', 'Kapal');
 
 -- --------------------------------------------------------
 
@@ -77,21 +75,21 @@ INSERT INTO `pembelian` (`kode_pb`, `kode_tk`, `ktp`, `tgl_pb`, `harga`, `des`, 
 
 CREATE TABLE `tiket` (
   `kode_tk` varchar(20) NOT NULL,
-  `supp` varchar(50) NOT NULL,
   `kelas` varchar(50) NOT NULL,
   `harga` int(50) NOT NULL,
-  `ket` varchar(100) NOT NULL,
-  `des` varchar(50) NOT NULL
+  `des` varchar(50) NOT NULL,
+  `supp` varchar(100) NOT NULL,
+  `jns` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tiket`
 --
 
-INSERT INTO `tiket` (`kode_tk`, `supp`, `kelas`, `harga`, `ket`, `des`) VALUES
-('1000020', 'Makmur', 'Bisinis', 400000, 'Bus Pariwisata', 'Pekanbaru'),
-('100092', 'Pesawat', 'Ekonomi', 20000, 'Airplane', 'Jakarta'),
-('267789', 'Pesawat', 'Bisnis', 1234567, 'bus', 'Jakarta');
+INSERT INTO `tiket` (`kode_tk`, `kelas`, `harga`, `des`, `supp`, `jns`) VALUES
+('1000020', 'Bisinis', 400000, 'Pekanbaru', 'Bus Pariwisata', 'Makmur'),
+('100092', 'Ekonomi', 20000, 'Jakarta', 'Airplane', 'Pesawat'),
+('267789', 'Bisnis', 1234567, 'Jakarta', 'Lion', 'Pesawat');
 
 --
 -- Indexes for dumped tables
