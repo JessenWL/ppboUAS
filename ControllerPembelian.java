@@ -47,9 +47,9 @@ public class ControllerPembelian implements ActionListener, MouseListener{
             model.addColumn("Kode Pembelian");
             model.addColumn("Kode Tiket");
             model.addColumn("No KTP Pelanggan");
-            model.addColumn("Tanggal Pembelian");
             model.addColumn("Harga");
             model.addColumn("Destinasi");
+            model.addColumn("Tanggal Pembelian");
             model.addColumn("Kendaraan");
             // Menampilkan data pada database ke dalam tabel
             try{
@@ -91,7 +91,7 @@ public class ControllerPembelian implements ActionListener, MouseListener{
             
             try {
                 if(data.SimpanPembelian(data)){
-                    JOptionPane.showMessageDialog(null, "Yeay!!! Berhasil Menyimpan");
+                    JOptionPane.showMessageDialog(null, "Data berhasil disimpan");
                     KosongFormPembelian();
                     TampilDataFormPembelian();
                 }
@@ -109,7 +109,7 @@ public class ControllerPembelian implements ActionListener, MouseListener{
             
             try {
                 if(data.UpdatePembelian(data)){
-                    JOptionPane.showMessageDialog(null, "Update Anda Berhasil");
+                    JOptionPane.showMessageDialog(null, "Update data berhasil");
                     KosongFormPembelian();
                     TampilDataFormPembelian();
                 }
@@ -121,7 +121,7 @@ public class ControllerPembelian implements ActionListener, MouseListener{
             
             try {
                 if(data.HapusPembelian(data)){
-                    JOptionPane.showMessageDialog(null, "Berhasil Menghapus");
+                    JOptionPane.showMessageDialog(null, "Semoga anda tidak menyesalinya");
                     KosongFormPembelian();
                     TampilDataFormPembelian();
                 }
@@ -136,21 +136,28 @@ public class ControllerPembelian implements ActionListener, MouseListener{
         if(me.getSource()==form.tabelPembelian){
             form.txtPembelian.setEditable(false);
             int baris=form.tabelPembelian.rowAtPoint(me.getPoint());
+            
             String no_pembelian=form.tabelPembelian.getValueAt(baris, 1).toString();
             form.txtPembelian.setText(no_pembelian);
+            
             String kode_tiket=form.tabelPembelian.getValueAt(baris, 2).toString();
             form.txtTiket.setText(kode_tiket);
+            
             String ktp=form.tabelPembelian.getValueAt(baris, 3).toString();
             form.txtNoKtp.setText(ktp);
+            
             String harga=form.tabelPembelian.getValueAt(baris, 4).toString();
             form.txtHarga.setText(harga);
+            
             String des=form.tabelPembelian.getValueAt(baris, 5).toString();
             form.txtDes.setText(des);
+            
             String tanggal=(String)form.tabelPembelian.getModel().getValueAt(baris, 6);
             try{
             SimpleDateFormat tgls = new SimpleDateFormat("yyyy-MM-dd");
             java.util.Date tanggals=tgls.parse(tanggal);
             form.datePembelian.setDate(tanggals);
+            
             }catch(Exception ex){
                 ex.printStackTrace();
             }
