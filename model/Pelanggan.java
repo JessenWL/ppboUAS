@@ -59,15 +59,15 @@ public class Pelanggan extends Connector{
         PreparedStatement pstm=null;
         Connection conn=(Connection)Connector.configDB();
         
-        String sql="INSERT INTO pelanggan (ktp, nama, alamat, jk, umur) VALUE(?, ?, ?, ?, ?)";
+        String sql="INSERT INTO pelanggan (ktp, nama, alamat, umur, jk) VALUE(?, ?, ?, ?, ?)";
         
         try{
             pstm=conn.prepareStatement(sql);
             pstm.setString(1, data.getKtp());
             pstm.setString(2, data.getNama());
             pstm.setString(3, data.getAlamat());
-            pstm.setString(4, data.getJk());
-            pstm.setString(5, data.getUmur());
+            pstm.setString(4, data.getUmur());
+            pstm.setString(5, data.getJk());
             pstm.execute();
             return true;
         }catch(HeadlessException | SQLException e){
@@ -79,15 +79,15 @@ public class Pelanggan extends Connector{
         PreparedStatement pstm=null;
         Connection conn=(Connection)Connector.configDB();
         
-        String sql="UPDATE pelanggan SET ktp=?, nama=?, alamat=?, jk=?, umur=? WHERE ktp=?";
+        String sql="update pelanggan set nama=?, alamat=?, umur=?, jk=? where ktp=?";
         
         try{
             pstm=conn.prepareStatement(sql);
-            pstm.setString(1, data.getKtp());
-            pstm.setString(2, data.getNama());
-            pstm.setString(3, data.getAlamat());
+            pstm.setString(5, data.getKtp());
+            pstm.setString(1, data.getNama());
+            pstm.setString(2, data.getAlamat());
+            pstm.setString(3, data.getUmur());
             pstm.setString(4, data.getJk());
-            pstm.setString(5, data.getUmur());
             pstm.execute();
             return true;
         }catch(HeadlessException | SQLException e){
