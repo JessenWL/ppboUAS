@@ -30,7 +30,7 @@ public class ControllerTiket implements ActionListener, MouseListener{
             this.form.btnTambah.addActionListener(this);
             this.form.btnEdit.addActionListener(this);
             this.form.btnHapus.addActionListener(this);
-            this.form.tabelTiket.addMouseListener(this);
+            this.form.tabelTiket.addMouseListener(this); 
     }
     
     public void KosongFormTiket(){
@@ -38,17 +38,19 @@ public class ControllerTiket implements ActionListener, MouseListener{
             form.cmbKelas.setSelectedItem(null);
             form.txtHarga.setText(null);
             form.txtDes.setText(null);
-            form.txtKet.setText(null);
-            form.cmbKendaraan.setSelectedItem(null);
+            form.txtSupp.setText(null);
+            form.txtJns.setSelectedItem(null);
         }
     public void TampilDataFormTiket(){
             DefaultTableModel model = new DefaultTableModel();
             model.addColumn("No");
+            model.addColumn("Nomor Tiket");
             model.addColumn("Kelas");
             model.addColumn("Harga");
             model.addColumn("Destinasi");
-            model.addColumn("Keterangan");
+            model.addColumn("Supplier");
             model.addColumn("Jenis Kendaraan");
+            
             // Menampilkan data pada database ke dalam tabel
             try{
                 int no=1;
@@ -64,7 +66,9 @@ public class ControllerTiket implements ActionListener, MouseListener{
                         res.getString(2),
                         res.getString(3),
                         res.getString(4),
-                        res.getString(5),});
+                        res.getString(5),
+                        res.getString(6),
+                    });
                 }
                 form.tabelTiket.setModel(model);
             }catch(SQLException e){
@@ -81,8 +85,8 @@ public class ControllerTiket implements ActionListener, MouseListener{
             data.setKelas((String) form.cmbKelas.getSelectedItem());
             data.setHarga(form.txtHarga.getText());
             data.setDes(form.txtDes.getText());
-            data.setKet(form.txtKet.getText());
-            data.setSupp((String) form.cmbKendaraan.getSelectedItem());
+            data.setSupp(form.txtSupp.getText());
+            data.setJns((String) form.txtJns.getSelectedItem());
             
             try {
                 if(data.SimpanTiket(data)){
@@ -98,8 +102,8 @@ public class ControllerTiket implements ActionListener, MouseListener{
             data.setKelas((String) form.cmbKelas.getSelectedItem());
             data.setHarga(form.txtHarga.getText());
             data.setDes(form.txtDes.getText());
-            data.setKet(form.txtKet.getText());
-            data.setSupp((String) form.cmbKendaraan.getSelectedItem());
+            data.setSupp(form.txtSupp.getText());
+            data.setJns((String) form.txtJns.getSelectedItem());
             
             try {
                 if(data.UpdateTiket(data)){
@@ -129,20 +133,25 @@ public class ControllerTiket implements ActionListener, MouseListener{
     public void mouseClicked(MouseEvent me) {
         if(me.getSource()==form.tabelTiket){
             form.txtNoTiket.setEditable(false);
-            
             int baris=form.tabelTiket.rowAtPoint(me.getPoint());
+            
             String no_tiket=form.tabelTiket.getValueAt(baris, 1).toString();
             form.txtNoTiket.setText(no_tiket);
+            
             String kelas=form.tabelTiket.getValueAt(baris, 2).toString();
             form.cmbKelas.setSelectedItem(kelas);
+            
             String harga_tiket=form.tabelTiket.getValueAt(baris, 3).toString();
             form.txtHarga.setText(harga_tiket);
+            
             String des=form.tabelTiket.getValueAt(baris, 4).toString();
             form.txtDes.setText(des);
-            String ket=form.tabelTiket.getValueAt(baris, 5).toString();
-            form.txtKet.setText(ket);
-            String supp=form.tabelTiket.getValueAt(baris, 6).toString();
-            form.cmbKendaraan.setSelectedItem(supp);
+            
+            String supp=form.tabelTiket.getValueAt(baris, 5).toString();
+            form.txtSupp.setText(supp);
+            
+            String jns=form.tabelTiket.getValueAt(baris, 6).toString();
+            form.txtJns.setSelectedItem(jns);
         }
     }
 
