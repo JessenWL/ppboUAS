@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -46,9 +47,9 @@ public class ControllerPembelian implements ActionListener, MouseListener{
             model.addColumn("Kode Pembelian");
             model.addColumn("Kode Tiket");
             model.addColumn("No KTP Pelanggan");
-            model.addColumn("Tanggal Pembelian");
             model.addColumn("Harga");
             model.addColumn("Destinasi");
+            model.addColumn("Tanggal Pembelian");
             model.addColumn("Kendaraan");
             // Menampilkan data pada database ke dalam tabel
             try{
@@ -85,12 +86,12 @@ public class ControllerPembelian implements ActionListener, MouseListener{
             data.setKtp(form.txtNoKtp.getText());
             data.setHarga(form.txtHarga.getText());
             data.setDes(form.txtDes.getText());
-            data.tanggal;
+            data.setTgl_pb(form.datePembelian.getDate());
             data.setJenis_kendaraan((String) form.cmbKendaraan.getSelectedItem());
             
             try {
                 if(data.SimpanPembelian(data)){
-                    JOptionPane.showMessageDialog(null, "Yeay!!! Berhasil Menyimpan");
+                    JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
                     KosongFormPembelian();
                     TampilDataFormPembelian();
                 }
@@ -103,7 +104,7 @@ public class ControllerPembelian implements ActionListener, MouseListener{
             data.setKtp(form.txtNoKtp.getText());
             data.setHarga(form.txtHarga.getText());
             data.setDes(form.txtDes.getText());
-            data.setTgl_pb(form.datePembelian.getDateFormatString());
+            data.setTgl_pb(form.datePembelian.getDate());
             data.setJenis_kendaraan((String) form.cmbKendaraan.getSelectedItem());
             
             try {
@@ -120,7 +121,7 @@ public class ControllerPembelian implements ActionListener, MouseListener{
             
             try {
                 if(data.HapusPembelian(data)){
-                    JOptionPane.showMessageDialog(null, "Berhasil Menghapus");
+                    JOptionPane.showMessageDialog(null, "Data Berhasil Dihapus");
                     KosongFormPembelian();
                     TampilDataFormPembelian();
                 }
@@ -134,7 +135,6 @@ public class ControllerPembelian implements ActionListener, MouseListener{
     public void mouseClicked(MouseEvent me) {
         if(me.getSource()==form.tabelPembelian){
             form.txtPembelian.setEditable(false);
-            
             int baris=form.tabelPembelian.rowAtPoint(me.getPoint());
             String no_pembelian=form.tabelPembelian.getValueAt(baris, 1).toString();
             form.txtPembelian.setText(no_pembelian);
@@ -146,8 +146,14 @@ public class ControllerPembelian implements ActionListener, MouseListener{
             form.txtHarga.setText(harga);
             String des=form.tabelPembelian.getValueAt(baris, 5).toString();
             form.txtDes.setText(des);
-            String tgl_beli=form.tabelPembelian.getValueAt(baris, 6).toString();
-            form.datePembelian.setDateFormatString(tgl_beli);
+            String tanggal=(String)form.tabelPembelian.getModel().getValueAt(baris, 6);
+            try{
+            SimpleDateFormat tgls = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date tanggals=tgls.parse(tanggal);
+            form.datePembelian.setDate(tanggals);
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
             String kendaraan=form.tabelPembelian.getValueAt(baris, 7).toString();
             form.cmbKendaraan.setSelectedItem(kendaraan);
         }
