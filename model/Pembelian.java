@@ -6,15 +6,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 public class Pembelian {
     private String kode_pb;
     private String kode_tk;
     private String ktp;
-    private String tgl_pb;
     private String harga;
     private String des;
+    private Date tgl_pb;
     private String jenis_kendaraan;
     
     public String getKode_pb() {
@@ -41,11 +43,11 @@ public class Pembelian {
         this.ktp = ktp;
     }
 
-    public String getTgl_pb() {
+    public Date getTgl_pb() {
         return tgl_pb;
     }
 
-    public void setTgl_pb(String tgl_pb) {
+    public void setTgl_pb(Date tgl_pb) {
         this.tgl_pb = tgl_pb;
     }
 
@@ -79,16 +81,18 @@ public class Pembelian {
         PreparedStatement pstm=null;
         Connection conn=(Connection)Connector.configDB();
         
-        String sql="INSERT INTO pembelian (kode_pb, kode_tk, ktp, tgl_pb, harga, des, jenis_kendaraan) VALUE(?, ?, ?, ?, ?, ?, ?)";
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        
+        String sql="INSERT INTO pembelian (kode_pb, kode_tk, ktp, harga, des,tgl_pb, jenis_kendaraan) VALUE(?, ?, ?, ?, ?, ?, ?)";
         
         try{
             pstm=conn.prepareStatement(sql);
             pstm.setString(1, data.getKode_pb());
             pstm.setString(2, data.getKode_tk());
             pstm.setString(3, data.getKtp());
-            pstm.setString(4, data.getTgl_pb());
-            pstm.setString(5, data.getHarga());
-            pstm.setString(6, data.getDes());
+            pstm.setString(4, data.getHarga());
+            pstm.setString(5, data.getDes());
+            pstm.setString(6, df.format(getTgl_pb()));
             pstm.setString(7, data.getJenis_kendaraan());
             pstm.execute();
             return true;
@@ -101,17 +105,19 @@ public class Pembelian {
         PreparedStatement pstm=null;
         Connection conn=(Connection)Connector.configDB();
         
-        String sql="UPDATE pembelian SET kode_pb=?, kode_tk=?, ktp=?, tgl_pb=?, harga=?, des=?, jenis_kendaraan=?   WHERE kode_pb=?";
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         
+        String sql="update pembelian set kode_tk=?, ktp=?, harga=?, des=?, tgl_pb=?, jenis_kendaraan=? where kode_pb=?";
+
         try{
             pstm=conn.prepareStatement(sql);
-            pstm.setString(1, data.getKode_pb());
-            pstm.setString(2, data.getKode_tk());
-            pstm.setString(3, data.getKtp());
-            pstm.setString(4, data.getTgl_pb());
-            pstm.setString(5, data.getHarga());
-            pstm.setString(6, data.getDes());
-            pstm.setString(7, data.getJenis_kendaraan());
+            pstm.setString(7, data.getKode_pb());
+            pstm.setString(1, data.getKode_tk());
+            pstm.setString(2, data.getKtp());
+            pstm.setString(3, data.getHarga());
+            pstm.setString(4, data.getDes());
+            pstm.setString(5, df.format(getTgl_pb()));
+            pstm.setString(6, data.getJenis_kendaraan());
             pstm.execute();
             return true;
         }catch(HeadlessException | SQLException e){
