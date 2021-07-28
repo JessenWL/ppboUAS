@@ -86,6 +86,7 @@ public class ControllerPembelian implements ActionListener, MouseListener{
             data.setKtp(form.txtNoKtp.getText());
             data.setHarga(form.txtHarga.getText());
             data.setDes(form.txtDes.getText());
+            String sql="SELECT * FROM pembelian";
             data.setTgl_pb(form.datePembelian.getDate());
             data.setJenis_kendaraan((String) form.cmbKendaraan.getSelectedItem());
             

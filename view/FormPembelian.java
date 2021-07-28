@@ -5,10 +5,23 @@
  */
 package view;
 
+import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
-
-
-
+import javax.swing.JOptionPane;
+import model.Connector;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -19,10 +32,14 @@ public class FormPembelian extends javax.swing.JFrame {
     /**
      * Creates new form pembelian
      */
-    
+    JasperReport JasRep;
+    JasperPrint JasPri;
+    Map param = new HashMap();
+    JasperDesign JasDes;
             
     public FormPembelian() {
         initComponents();
+        this.setLocationRelativeTo(null);
         
     }
     
@@ -60,6 +77,8 @@ public class FormPembelian extends javax.swing.JFrame {
         cmbKendaraan = new javax.swing.JComboBox<>();
         back = new javax.swing.JButton();
         datePembelian = new com.toedter.calendar.JDateChooser();
+        Conf = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DATA PEMBELIAN");
@@ -103,12 +122,16 @@ public class FormPembelian extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tabelPembelian);
 
-        btnTambah.setText("INSERT");
+        btnTambah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/clear2.png"))); // NOI18N
+        btnTambah.setText("CLEAR");
 
+        btnHapus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/delete2.png"))); // NOI18N
         btnHapus.setText("DELETE");
 
+        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/update2.png"))); // NOI18N
         btnEdit.setText("UPDATE");
 
+        btnSimpan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/submit2.png"))); // NOI18N
         btnSimpan.setText("SUBMIT");
         btnSimpan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,7 +180,8 @@ public class FormPembelian extends javax.swing.JFrame {
             }
         });
 
-        back.setText("BACK");
+        back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/back2.png"))); // NOI18N
+        back.setText("Back");
         back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backActionPerformed(evt);
@@ -165,6 +189,22 @@ public class FormPembelian extends javax.swing.JFrame {
         });
 
         datePembelian.setDateFormatString("dd-MM-yyyy");
+
+        Conf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/search.png"))); // NOI18N
+        Conf.setText("History Check");
+        Conf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ConfActionPerformed(evt);
+            }
+        });
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/print2.png"))); // NOI18N
+        jButton1.setText("Print");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -189,11 +229,12 @@ public class FormPembelian extends javax.swing.JFrame {
                     .addComponent(txtHarga)
                     .addComponent(cmbKendaraan, 0, 226, Short.MAX_VALUE)
                     .addComponent(datePembelian, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(Conf)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(31, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 771, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -202,7 +243,11 @@ public class FormPembelian extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18))
         );
         jPanel2Layout.setVerticalGroup(
@@ -215,7 +260,8 @@ public class FormPembelian extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Conf))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -247,8 +293,10 @@ public class FormPembelian extends javax.swing.JFrame {
                     .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(back, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(19, 19, 19))
         );
 
@@ -280,15 +328,57 @@ public class FormPembelian extends javax.swing.JFrame {
         
     }//GEN-LAST:event_backActionPerformed
 
-    private void cmbKendaraanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbKendaraanActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbKendaraanActionPerformed
-
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
         
         
     }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void ConfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfActionPerformed
+        String a = (String)txtTiket.getText();
+        String sql = "Select * from tiket where kode_tk=?";
+        
+     try{
+        Connection conn=(Connection)Connector.configDB();
+        PreparedStatement pstm=conn.prepareStatement(sql);
+        
+        pstm.setString(1, a);
+        ResultSet rs = pstm.executeQuery();
+            
+            if(rs.next()){
+                txtHarga.setText(rs.getString("harga"));
+                txtDes.setText(rs.getString("des"));
+                cmbKendaraan.setSelectedItem(rs.getString("jns"));
+                JOptionPane.showMessageDialog(null, "Customer terdaftar !");
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Input data customer terlebih dahulu !");
+            }
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error!");
+        }
+    }//GEN-LAST:event_ConfActionPerformed
+
+    private void cmbKendaraanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbKendaraanActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbKendaraanActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try
+        {
+            File file = new File("src\\ReportPinjaman.jrxml");
+            JasDes=JRXmlLoader.load(file);
+            param.clear();
+            JasRep=JasperCompileManager.compileReport(JasDes);
+            JasPri=JasperFillManager.fillReport(JasRep, param, (Connection)Connector.configDB());
+            JasperViewer.viewReport(JasPri, false);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -329,6 +419,7 @@ public class FormPembelian extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Conf;
     private javax.swing.JButton back;
     public javax.swing.JButton btnEdit;
     public javax.swing.JButton btnHapus;
@@ -336,6 +427,7 @@ public class FormPembelian extends javax.swing.JFrame {
     public javax.swing.JButton btnTambah;
     public javax.swing.JComboBox<String> cmbKendaraan;
     public com.toedter.calendar.JDateChooser datePembelian;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

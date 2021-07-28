@@ -20,6 +20,7 @@ public class Connector {
         }catch(SQLException e){
             System.out.println("Gagal Mengoneksikan Ke Database" + e.getMessage());
         }
+        
         return MySQLConfig;   
     }   
 }

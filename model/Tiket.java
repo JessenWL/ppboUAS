@@ -10,11 +10,11 @@ import javax.swing.JOptionPane;
 
 public class Tiket extends Connector{
     private String kode_tk;
-    private String supp;
     private String kelas;
     private String harga;
-    private String ket;
     private String des;
+    private String supp;
+    private String jns;
 
     public String getKode_tk() {
         return kode_tk;
@@ -24,13 +24,7 @@ public class Tiket extends Connector{
         this.kode_tk = kode_tk;
     }
 
-    public String getSupp() {
-        return supp;
-    }
 
-    public void setSupp(String supp) {
-        this.supp = supp;
-    }
 
     public String getKelas() {
         return kelas;
@@ -40,6 +34,8 @@ public class Tiket extends Connector{
         this.kelas = kelas;
     }
 
+    
+    
     public String getHarga() {
         return harga;
     }
@@ -47,15 +43,9 @@ public class Tiket extends Connector{
     public void setHarga(String harga) {
         this.harga = harga;
     }
-
-    public String getKet() {
-        return ket;
-    }
-
-    public void setKet(String ket) {
-        this.ket = ket;
-    }
-
+    
+    
+    
     public String getDes() {
         return des;
     }
@@ -64,20 +54,40 @@ public class Tiket extends Connector{
         this.des = des;
     }
     
+    
+    public String getSupp() {
+        return supp;
+    }
+
+    public void setSupp(String supp) {
+        this.supp = supp;
+    }
+
+    
+    
+    public String getJns() {
+        return jns;
+    }
+
+    public void setJns(String jns) {
+        this.jns = jns;
+    }
+    
     public boolean SimpanTiket(Tiket data) throws SQLException{
         PreparedStatement pstm=null;
         Connection conn=(Connection)Connector.configDB();
         
-        String sql="INSERT INTO tiket (kode_tk, supp, kelas, harga, ket, des) VALUE(?, ?, ?, ?, ?, ?)";
+        String sql="INSERT INTO tiket (kode_tk, kelas, harga, des, supp,jns ) VALUE(?, ?, ?, ?, ?, ?)";
         
         try{
             pstm=conn.prepareStatement(sql);
             pstm.setString(1, data.getKode_tk());
-            pstm.setString(2, data.getSupp());
-            pstm.setString(3, data.getKelas());
-            pstm.setString(4, data.getHarga());
-            pstm.setString(5, data.getKet());
-            pstm.setString(6, data.getDes());
+            pstm.setString(2, data.getKelas());
+            pstm.setString(3, data.getHarga());
+            pstm.setString(4, data.getDes());
+            pstm.setString(5, data.getSupp());
+            pstm.setString(6, data.getJns());
+            
             pstm.execute();
             return true;
         }catch(HeadlessException | SQLException e){
@@ -89,16 +99,16 @@ public class Tiket extends Connector{
         PreparedStatement pstm=null;
         Connection conn=(Connection)Connector.configDB();
         
-        String sql="UPDATE tiket SET kode_tk=?, supp=?, kelas=?, harga=?, ket=?, des=? WHERE kode_tk=?";
+        String sql="UPDATE tiket SET kelas=?,harga=?,des=?,supp=?,jns=?  WHERE kode_tk=?";
         
         try{
             pstm=conn.prepareStatement(sql);
-            pstm.setString(1, data.getKode_tk());
-            pstm.setString(2, data.getSupp());
-            pstm.setString(3, data.getKelas());
-            pstm.setString(4, data.getHarga());
-            pstm.setString(5, data.getKet());
-            pstm.setString(6, data.getDes());
+            pstm.setString(6, data.getKode_tk());
+            pstm.setString(1, data.getKelas());
+            pstm.setString(2, data.getHarga());
+            pstm.setString(3, data.getDes());
+            pstm.setString(4, data.getSupp());
+            pstm.setString(5, data.getJns());
             pstm.execute();
             return true;
         }catch(HeadlessException | SQLException e){
